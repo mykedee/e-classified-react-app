@@ -4,12 +4,16 @@ const categorySchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			enum: ['Mobile Phones', 'Computers', 'Cars', 'Furnitures', 'Fashion'],
+			unique: true,
+			// enum: ['Mobile Phones', 'Computers', 'Cars', 'Furnitures', 'Fashion']
 		},
-		photo: {
-			type: String,
-			required: true,
-		},
+		//photo: {
+		//	type: String,
+		//	required: true,
+		//},
+		parentId: {
+			type: String
+		}
 	},
 	{
 		timestamps: {

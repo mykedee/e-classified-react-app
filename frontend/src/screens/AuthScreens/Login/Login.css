@@ -1,0 +1,13 @@
+.login .card {
+border: none;
+box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.12);
+}
+
+.dont-have-account a {
+color: #00C700;
+text-decoration: none;
+}
+
+.dont-have-account:hover {
+text-decoration: underline;
+}

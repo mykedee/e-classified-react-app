@@ -17,18 +17,47 @@ const productSchema = new mongoose.Schema(
 		condition: {
 			type: String,
 			enum: {
-				values: ['used', 'new', 'refurbished'],
-				message: 'Condition must be either used, new  or refurbished ',
+				values: ['used', 'new', 'for-parts'],
+				message: 'Condition must be either used, new  or for-parts',
 			},
 		},
 		photo: {
 			type: String,
 			required: true,
 		},
+		draft: {
+			type: Boolean,
+			default: true,
+		},
+		isApproved: {
+			type: Boolean,
+			default: true,
+		},
+		isReviewing: {
+			type: Boolean,
+			default: true,
+		},
+		isFeatured: {
+			type: Boolean,
+			default: false,
+		},
+		unpublished: {
+			type: Boolean,
+			default: false,
+		},
 		postedBy: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'User',
 		},
+		shop: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Shop',
+		},
+		//watched/saved product by users
+		watchedBy: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+		}],
 		category: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Category',
@@ -46,7 +75,7 @@ const productSchema = new mongoose.Schema(
 	}
 );
 
-productSchema.pre('save', function() {
+productSchema.pre('save', function () {
 	this.slug = slugify(this.title.split(' ').join('-'), { lover: true });
 });
 module.exports = mongoose.model('Product', productSchema);

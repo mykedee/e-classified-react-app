@@ -2,12 +2,19 @@ const Category = require('../models/categoryModel');
 
 exports.createCategories = async (req, res) => {
 	try {
-		const { name } = req.body;
-		req.body.photo = req.file.location;
-		const categories = await Category.create(req.body);
+		const catObject = {
+			name: req.body.name
+		}
+		//req.body.photo = req.file.location;
+		if (req.body.parentId) {
+			catObject.parentId = req.body.parentId
+		}
+
+
+
+		const categories = await Category.create(catObject);
 		res.status(200).json({
 			success: true,
-
 			categories,
 		});
 	} catch (error) {
@@ -20,15 +27,15 @@ exports.createCategories = async (req, res) => {
 
 exports.getCategories = async (req, res) => {
 	try {
-		const categories = await Category.find();
+		const categories = await Category.find().populate('parentId', 'name')
 		res.status(200).json({
+			count: categories.length,
 			success: true,
 			categories,
 		});
 	} catch (error) {
 		res.status(400).json({
 			success: false,
-
 			message: error.message,
 		});
 	}
@@ -58,11 +65,11 @@ exports.updateCategory = async (req, res) => {
 	} catch (error) {
 		res.status(400).json({
 			success: false,
-
 			message: error.message,
 		});
 	}
 };
+
 exports.deleteCategory = async (req, res) => {
 	try {
 		const id = req.params;

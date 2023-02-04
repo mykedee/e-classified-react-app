@@ -1,0 +1,16 @@
+/* .seller-info-card {
+background-color: red;
+border: none;
+} */
+
+
+
+.watch-icon.card-title.h5 {
+    z-index: 100;
+    position: absolute;
+    right: 21px;
+    background: #002a00;
+    padding: 7px;
+    border-radius: 50%;
+    color: white;
+}

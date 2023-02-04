@@ -1,0 +1,146 @@
+import React, { useEffect, useState } from 'react'
+import { Table, Button, Modal, Form, Col, Row } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { listUsers } from '../../components/Actions/userAction'
+import Loader from '../../components/Loader/Loader'
+import Message from '../../components/Errors/Message'
+import FormContainer from '../../components/Forms/FormContainer';
+
+
+// import User from '../../components/Users/User'
+
+const UsersScreen = () => {
+ const dispatch = useDispatch();
+
+ const [showDelete, setShowDelete] = useState(false);
+ const [showEdit, setShowEdit] = useState(false);
+ const [username, setUsername] = useState('');
+ const [email, setEmail] = useState('');
+ const [role, setRole] = useState('');
+ // const handleClose = () => setShow(false);
+ // const handleShow = () => setShow(true);
+
+ const userList = useSelector(state => state.userList);
+ const { error, loading, users } = userList;
+ useEffect(() => {
+  dispatch(listUsers());
+ }, [dispatch]);
+ const deleteHandler = (id) => {
+  console.log('delete')
+ }
+ return (
+  <>
+   <h3>Users</h3>
+   {loading ? <Loader /> : error ? <Message variant="danger">{error}</Message> : (
+    <Table striped bordered hover>
+     <thead>
+      <tr>
+       <th>#</th>
+       <th>Username</th>
+       <th>Email</th>
+       <th>Role</th>
+       <th>Date Registered</th>
+       <th>Modify</th>
+      </tr>
+     </thead>
+     <tbody>
+      {users.map((user, index) => (
+       <tr key={user._id}>
+        <td>{index + 1}</td>
+        <td>{user.username}</td>
+        <td><a href={`mailto:${user.email}`}>{user.email}</a></td>
+        <td>{user.role === "admin" ? (
+         <i className="fas fa-check" style={{ color: 'green' }}></i>) : (<i className="fas fa-times" style={{ color: 'red' }}></i>)}
+        </td>
+        <td>{user.createdAt}</td>
+        <td>
+         {/* <LinkContainer to={`/user/${user._id}/edit`}> */}
+         <Button variant="light" className="btn-sm" onClick={() => setShowEdit(true)}>
+          <i className="fas fa-edit"></i>
+         </Button>
+         {/* </LinkContainer> */}
+         <Button variant="danger" className="btn-sm" onClick={() => setShowDelete(true)}>
+          {/* <Button variant="danger" className="btn-sm" onClick={() => deleteHandler(user._id)}> */}
+          <i className="fas fa-trash"></i>
+         </Button>
+        </td>
+       </tr>
+      ))}
+     </tbody>
+    </Table>
+
+   )}
+   <Modal size="lg" {users._id}
+    show={showEdit} onHide={() => setShowEdit(false)}>
+    <Modal.Header closeButton>
+     <Modal.Title>Modal heading</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+
+     <Row>
+      <Col>
+       <Form.Group className="mb-4" controlId="formBasicPassword">
+        <Form.Control type="name" placeholder={user.username} value={username} onChange={e => setUsername(e.target.value)} />
+       </Form.Group>
+
+
+       <Form.Group className="mb-4" controlId="formBasicPassword">
+        <Form.Control type="email" name="user.email" placeholder={user.email} value={email} onChange={e => setEmail(e.target.value)} />
+       </Form.Group>
+
+      </Col>
+
+      <Col>
+
+       <Form.Group className="mb-4" controlId="formBasicEmail">
+        <Form.Control type="email" placeholder={user.role} value={role} onChange={e => setRole(e.target.value)} />
+        <Form.Text className="text-muted">
+        </Form.Text>
+       </Form.Group>
+
+
+      </Col>
+
+     </Row>
+
+     <Form className="login-form mx-md-auto">
+
+
+
+
+      {/* <Button variant="primary" type="submit" className="w-100">
+              Login
+            </Button> */}
+
+     </Form>
+
+    </Modal.Body>
+    <Modal.Footer>
+     {/* <Button variant="secondary">
+            Close
+          </Button> */}
+     <Button variant="primary">
+      Update User
+     </Button>
+    </Modal.Footer>
+   </Modal>
+
+
+
+   <Modal
+    size="lg"
+    show={showDelete} onHide={() => setShowDelete(false)}
+
+    aria-labelledby="example-modal-sizes-title-sm"
+   >
+    <Modal.Header closeButton>
+     <Modal.Title id="example-modal-sizes-title-sm">
+      Delete          </Modal.Title>
+    </Modal.Header>
+    <Modal.Body>...</Modal.Body>
+   </Modal>
+  </>
+ )
+}
+export default UsersScreen

@@ -1,0 +1,61 @@
+import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Card, Row, Col } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { listProducts, watchProduct } from '../Actions/productActions'
+
+const ProductSection = () => {
+ const [watchedBy, setWatchedBy] = useState('')
+ // const [unwatchedBy, setUnwatchedBy] = useState('')
+ const dispatch = useDispatch()
+ const productList = useSelector(state => state.productList)
+ const { products } = productList
+ const userLogin = useSelector(state => state.userLogin)
+ const { userInfo } = userLogin
+ useEffect(() => {
+  dispatch(listProducts())
+ }, [dispatch])
+
+ // const [values, setValues] = useState({
+ //  watch: watchProductHandler(props.post.watch),
+ //  unwatch: props.post.unwatch.length,
+ // })
+
+ // const watchProductHandler = () => {
+ //  let watchItem = watchedBy ? unwatchedBy : watchedBy
+
+ //  dispatch(watchProduct(watchItem(watchedBy({ userId: userInfo.user._id }))))
+ //  console.log(watchProduct(watchItem(watchedBy({ userId: userInfo.user._id }))))
+ // }
+ return (
+  <>
+   <Row>
+    {/* <Card.Body> */}
+    {products.map(product => (
+
+     <Col sm={12} md={6} lg={4} xl={3}>
+      <Card className="my-3 p-3 rounded">
+       <Link to={`/products/${product._id}`}>
+        <Card.Title className="watch-icon" onClick={
+         () => setWatchedBy(dispatch(watchProduct({ watchedBy: userInfo.user._id })))
+        }>
+         <span><i className="fa-regular fa-heart"></i></span>
+        </Card.Title>
+        {/* <Card.Title className="watch-icon" onClick={watchProductHandler} value={watch} onChange={e => setPassword(e.target.value)} ><i className="fa-regular fa-heart"></i></Card.Title> */}
+        <Card.Img src={product.photo}></Card.Img></Link>
+       <Card.Title><p>{product.title}</p> </Card.Title>
+       <Card.Title><strong>₦ {product.price}</strong>
+       </Card.Title>
+       {/* <Card.Text>{product.rating} from {product.numReviews}</Card.Text> */}
+      </Card>
+     </Col>
+
+    ))}
+    {/* </Card.Body> */}
+
+   </Row>
+  </>
+ )
+}
+
+export default ProductSection

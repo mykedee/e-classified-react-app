@@ -1,0 +1,13 @@
+.register .card {
+border: none;
+box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.12);
+}
+
+.terms a, .privacy a {
+color: #00C700;
+text-decoration: none;
+}
+
+.terms:hover, .privacy:hover {
+text-decoration: underline;
+}

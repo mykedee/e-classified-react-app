@@ -1,0 +1,23 @@
+nav {
+height: 78px;
+}
+
+nav a {
+color: #002A00 !important;
+}
+
+
+nav.fixed-top.navbar.navbar-expand-lg.navbar {
+    background: #fff !important;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
+}
+
+.profile-icon, .profile-icon p {
+border-radius: 1px solid red;
+width: 40px;
+height: 40px;
+background-color: red;
+border-radius: 50%;
+}
+
+
